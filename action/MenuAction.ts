@@ -158,3 +158,41 @@ export const deleteMenuAction = async (menuID: number, fileId?: string) => {
     return { message: error.message || "Failed to connect to the server.", success: false };
   }
 };
+
+export const getMenuAll = async () => {
+  try {
+    const res = await fetch("http://localhost:3000/api/admin/menu", {
+      cache: "no-store",
+    });
+
+    if (!res.ok) throw new Error("Failed to fetch menus");
+
+    const data = await res.json();
+    return { success: true, data };
+  } catch (error: any) {
+    console.error("Error fetching menus:", error);
+    return { success: false, data: [], error: error.message };
+  }
+};
+
+
+export const updateMenuAvailability = async (menuID: number, isAvailable: boolean) => {
+  try {
+    const response = await fetch(`http://localhost:3000/api/admin/menu/${menuID}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ isAvailable }),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      return { message: result.error || "Failed to update availability", success: false };
+    }
+
+    return { message: "Menu availability updated successfully!", success: true };
+  } catch (error: any) {
+    console.error("Fetch error:", error);
+    return { message: error.message || "Failed to connect to the server.", success: false };
+  }
+};
