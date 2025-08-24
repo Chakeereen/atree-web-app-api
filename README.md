@@ -37,6 +37,13 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 
 
+
+npm install prisma --save-dev
+npm install @prisma/client
+
+
+
+
 npx shadcn@latest init
 npx shadcn@latest add button
 
