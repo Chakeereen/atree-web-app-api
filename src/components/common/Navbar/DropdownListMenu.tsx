@@ -27,10 +27,10 @@ const DropdownListMenu = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
+                <DropdownMenuSeparator className="my-3" />
                 {
                     links.map((item, index) => {
-                        return <DropdownMenuItem key={index}>
+                        return <DropdownMenuItem asChild key={index}>
                             <Link href={item.href}>{item.label}</Link>
                         </DropdownMenuItem>
                     })
