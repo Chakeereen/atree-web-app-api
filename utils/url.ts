@@ -1,0 +1,1 @@
+export const URL = process.env.LocalURL as string;
