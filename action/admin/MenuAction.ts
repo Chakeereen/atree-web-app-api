@@ -1,14 +1,15 @@
 'use server';
 
-import { URL } from "../utils/url";
+//import { URL } from "../../utils/url";
 
-'use server'
+
 
 export const createMenuAction = async (prevState: any, formData: FormData) => {
   try {
     const file = formData.get("image") as File | null;
     let imageUrl: string | null = null;
     let fileId: string | null = null;
+
 
     if (file) {
       const uploadForm = new FormData();
@@ -33,7 +34,7 @@ export const createMenuAction = async (prevState: any, formData: FormData) => {
       price: Number(formData.get("price")),
       image: imageUrl,
       fileID: fileId,
-      typeID: Number(formData.get("typeID")),
+      typeID: Number(formData.get("menuType")),
     };
 
     const response = await fetch("http://localhost:3000/api/admin/menu", {
@@ -104,7 +105,7 @@ export const editMenuAction = async (prevState: any, formData: FormData) => {
       price: Number(formData.get("price")),
       image: imageUrl,
       fileID: fileId,  // 👈 update fileID ด้วย
-      typeID: Number(formData.get("typeID")),
+      typeID: Number(formData.get("menuType")),
     };
 
     const response = await fetch(`http://localhost:3000/api/admin/menu/${menuID}`, {

@@ -1,4 +1,4 @@
-import { EditMenu } from "@/components/common/admin/table/tableCRUD/edit/EditMenu";
+import { EditMenu } from "@/components/common/admin/Table/MenuTableCRUD/Edit/EditMenu";
 
 
 async function getMenu (id: string) {

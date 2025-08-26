@@ -1,4 +1,4 @@
-import MenuTable from "@/components/common/admin/table/MenuTable"
+import MenuTable from "@/components/common/admin/Table/MenuTable"
 
 const page = () => {
   return (

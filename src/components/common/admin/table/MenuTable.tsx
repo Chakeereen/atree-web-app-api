@@ -17,6 +17,7 @@ export default function MenuTable() {
         const res = await fetch("http://localhost:3000/api/admin/menu", { cache: "no-store" });
         if (!res.ok) throw new Error("Failed to fetch menus");
         const data = await res.json();
+        console.log(data)
         setMenus(data);
       } catch (error) {
         console.error("Error fetching menus:", error);
@@ -36,7 +37,6 @@ export default function MenuTable() {
       </div>
     );
   }
-
   return (
     <Card className="shadow-lg rounded-2xl">
       <CardContent>
@@ -62,7 +62,7 @@ export default function MenuTable() {
                   />
                 </TableCell>
                 <TableCell className="font-medium">{menu.name}</TableCell>
-                <TableCell>{menu.price.toFixed(2)} ฿</TableCell>
+                <TableCell>{Number(menu.price).toFixed(2)} ฿</TableCell>
                 <TableCell>
                   {menu.isAvailable ? (
                     <Badge className="bg-green-500">พร้อมขาย</Badge>
@@ -70,7 +70,7 @@ export default function MenuTable() {
                     <Badge variant="destructive">หมด</Badge>
                   )}
                 </TableCell>
-                <TableCell>{menu.typeID}</TableCell>
+                <TableCell>{menu.type?.name}</TableCell>
               </TableRow>
             ))}
           </TableBody>

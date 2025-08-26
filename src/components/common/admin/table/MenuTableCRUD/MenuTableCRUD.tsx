@@ -10,15 +10,16 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 import { Loader2 } from "lucide-react";
-import MenuActions from "./MenuActions";
-import { deleteMenuAction, getMenuAll, updateMenuAvailability } from "../../../../../../action/MenuAction";
+
+import { deleteMenuAction, getMenuAll, updateMenuAvailability } from "../../../../../../action/admin/MenuAction";
 import { Menu } from "../../../../../../utils/type";
 import Modal from "@/components/common/Modal";
-import { EditMenu } from "./edit/EditMenu";
+
 import CreateMenu from "@/app/admin/menu/create/page";
 import ToggleSwitch from "../../switch/ToggleSwitch";
+import MenuActions from "./MenuActions";
+import { EditMenu } from "./Edit/EditMenu";
 
 export default function MenuTableCRUD() {
     const [menus, setMenus] = useState<Menu[]>([]);
@@ -63,7 +64,7 @@ export default function MenuTableCRUD() {
             </div>
         );
     }
-
+    
     return (
         <>
             {/* ตารางเมนู */}
@@ -102,7 +103,7 @@ export default function MenuTableCRUD() {
                                         />
                                     </TableCell>
                                     <TableCell className="font-medium">{menu.name}</TableCell>
-                                    <TableCell>{menu.price.toFixed(2)} ฿</TableCell>
+                                    <TableCell>{Number(menu.price).toFixed(2)} ฿</TableCell>
                                     <TableCell>
                                         {/* Toggle Switch สำหรับเปลี่ยน isAvailable */}
                                         <ToggleSwitch
@@ -122,7 +123,7 @@ export default function MenuTableCRUD() {
                                             }}
                                         />
                                     </TableCell>
-                                    <TableCell>{menu.typeID}</TableCell>
+                                    <TableCell>{menu.type?.name}</TableCell>
                                     <TableCell className="text-right">
                                         <MenuActions
                                             menu={menu}

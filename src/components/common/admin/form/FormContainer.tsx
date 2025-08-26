@@ -29,11 +29,14 @@ export const FormContainer = ({ action, children, onSuccess, refreshOnSuccess }:
 
   useEffect(() => {
     if (state.message) {
-      toast(state.message)
-
-      if (state.success && refreshOnSuccess) {
-        router.refresh() // 🔥 รีเฟรชหน้าอัตโนมัติ
+      if(!state.success) {
+        toast.error(state.message)
       }
+      toast.success(state.message)
+
+      // if (state.success && refreshOnSuccess) {
+      //   router.refresh() // 🔥 รีเฟรชหน้าอัตโนมัติ
+      // }
 
       onSuccess?.()
     }

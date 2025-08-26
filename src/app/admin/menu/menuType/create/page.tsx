@@ -1,34 +1,28 @@
 'use client'
 import { SubmitButton } from "@/components/common/admin/form/Button";
 import FormInput from "@/components/common/admin/form/FormInput"
-import { createMenuAction } from "../../../../../action/admin/MenuAction";
-import ImageInput from "@/components/common/admin/form/ImageInput";
 import { FormContainer } from "@/components/common/admin/form/FormContainer";
-import { MenuCategoryInput } from "@/components/common/admin/form/MenuCategoryInput";
+import { createMenuTypeAction } from "../../../../../../action/admin/MenuTypeAction";
 
-
-interface CreateMenuProps {
+interface CreateMenuTypeProps {
   onSuccess?: () => void
 }
 
-const CreateMenu = ({ onSuccess }: CreateMenuProps) => {
+const CreateMenuType = ({ onSuccess }: CreateMenuTypeProps) => {
     return (
         <section>
             <h1 className="text-2xl font-semibold mb-8 capitalize">new menu</h1>
             <div className="border p-8 rounded-md max-w-lg">
                 <FormContainer 
-                    action={createMenuAction} 
+                    action={createMenuTypeAction} 
                     onSuccess={onSuccess} // ✅ เรียก callback หลังสร้างเมนูสำเร็จ
                     refreshOnSuccess={false} // ไม่ต้อง refresh ในนี้ เพราะเราจะทำใน onSuccess ของ Page
                 >
-                    <FormInput name="name" label="Menu Name" type="text" />
-                    <FormInput name="price" label="Menu Price" type="number" />
-                    <MenuCategoryInput />
-                    <ImageInput />
+                    <FormInput name="name" label="Menu Type Name" type="text" />
                     <SubmitButton text="create menu" />
                 </FormContainer>
             </div>
         </section>
     )
 }
-export default CreateMenu
+export default CreateMenuType

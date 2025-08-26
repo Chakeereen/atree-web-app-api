@@ -1,7 +1,7 @@
 // app/api/menu/route.ts
 
 import { NextResponse } from 'next/server';
-import { prisma } from '../../../../lib/prisma'; 
+import { prisma } from '../../../../lib/prisma';
 
 // Interface สำหรับ Type-Checking Body ที่รับเข้ามา
 interface RequestBody {
@@ -16,6 +16,9 @@ export async function GET() {
   try {
     const menus = await prisma.menuLists.findMany({
       orderBy: { name: 'asc' },
+      include: {
+        type: true, // ดึงข้อมูล MenuType ทั้งหมดของแต่ละเมนู
+      },
     });
 
     return NextResponse.json(menus, { status: 200 });

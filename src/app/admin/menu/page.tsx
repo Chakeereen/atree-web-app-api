@@ -1,5 +1,5 @@
 'use client'
-import MenuTableCRUD from "@/components/common/admin/table/tableCRUD/MenuTableCRUD";
+import MenuTableCRUD from "@/components/common/admin/Table/MenuTableCRUD/MenuTableCRUD";
 
 
 export default function Page() {

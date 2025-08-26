@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  
 }
 
 datasource db {
@@ -25,12 +24,138 @@ model Post {
   updatedAt DateTime @updatedAt
 }
 
+model Admin {
+  username String @id
+  password String
+  image    String
+  fileID   String
+}
+
+model Table {
+  tableNo        Int      @id @default(autoincrement())
+  locationDetail String
+  orders         Orders[]
+}
+
+model ServiceState {
+  serviceID   Int      @id @default(autoincrement())
+  serviceName String
+  orders      Orders[]
+}
+
+model Orders {
+  orderNo   Int      @id @default(autoincrement())
+  tableNO   Int
+  serviceID Int
+  dateTime  DateTime
+
+  table    Table         @relation(fields: [tableNO], references: [tableNo])
+  service  ServiceState  @relation(fields: [serviceID], references: [serviceID])
+  details  OrderDetail[]
+  payments Payment[]
+
+}
+
+model OrderDetail {
+  detailNo     Int      @id @default(autoincrement())
+  orderNo      Int
+  menuID       Int
+  trackOrderID Int
+  amount       Int
+  dateTime     DateTime
+  updateAT     DateTime @updatedAt
+
+  order Orders     @relation(fields: [orderNo], references: [orderNo])
+  menu  MenuLists  @relation(fields: [menuID], references: [menuID])
+  track OrderTrack @relation(fields: [trackOrderID], references: [trackOrderID])
+
+  cancelLog CancelOrderLog[]
+}
+
+model CancelOrderLog {
+  cancelLog   Int      @id @default(autoincrement())
+  detailNo    Int
+  orderNo     Int
+  description String
+  cancelBy    String
+  createAt    DateTime @default(now())
+
+  detail OrderDetail @relation(fields: [detailNo], references: [detailNo])
+}
+
+model OrderTrack {
+  trackOrderID   Int           @id @default(autoincrement())
+  trackStateName String
+  details        OrderDetail[]
+}
+
 model MenuLists {
-  menuID Int @id @default(autoincrement())
-  name String @unique
-  price Float
+  menuID      Int      @id @default(autoincrement())
+  name        String
+  price       Decimal  @db.Decimal(10, 2) // ใช้ Decimal
   isAvailable Boolean @default(true)
-  image String
-  fileID String
-  typeID Int
+  image       String
+  fileID      String
+  typeID      Int
+  createAt    DateTime @default(now())
+  updateAt    DateTime @updatedAt
+
+  type    MenuType      @relation(fields: [typeID], references: [typeID])
+  details OrderDetail[]
+}
+
+model MenuType {
+  typeID Int         @id @default(autoincrement())
+  name   String
+  menus  MenuLists[]
+}
+
+model Payment {
+  paymentNo Int           @id @default(autoincrement())
+  orderNo   Int
+  totalCost Decimal       @db.Decimal(10, 2) // เปลี่ยนเป็น Decimal
+  dateTime  DateTime      @default(now())
+  status    PaymentStatus // enum แทน paymentConfirm
+  staffID   Int
+  methodID  Int
+
+  order  Orders    @relation(fields: [orderNo], references: [orderNo])
+  staff  Staff     @relation(fields: [staffID], references: [staffID])
+  method PayMethod @relation(fields: [methodID], references: [methodID])
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+model PayMethod {
+  methodID   Int       @id @default(autoincrement())
+  methodName String
+  payments   Payment[]
+}
+
+model Staff {
+  staffID  Int    @id @default(autoincrement())
+  name     String
+  surname  String
+  telNo    String
+  username String
+  password String
+  image    String
+  fileID   String
+
+  payments  Payment[]
+  loginLogs LoginLog[]
+}
+
+model LoginLog {
+  logNo       Int      @id @default(autoincrement())
+  staffID     Int
+  loginResult String
+  dateTime    DateTime @default(now())
+
+  staff Staff @relation(fields: [staffID], references: [staffID])
 }
