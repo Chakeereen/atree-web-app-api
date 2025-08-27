@@ -32,7 +32,7 @@ export default function RootLayout({
       >
         <Provider>
           <Navbar />
-          <main className="container">{children}</main>
+          <main>{children}</main>
           <Toaster position="top-center" richColors />
         </Provider>
       </body>

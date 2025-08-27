@@ -12,29 +12,28 @@ import {
 } from "@/components/ui/table";
 import { Loader2 } from "lucide-react";
 
-import { deleteMenuAction, getMenuAll, updateMenuAvailability } from "../../../../../../action/admin/MenuAction";
-import { MenuLists } from "../../../../../../utils/type";
+import { TableNo } from "../../../../../../utils/type";
 import Modal from "@/components/common/Modal";
-
-import CreateMenu from "@/app/admin/menu/create/page";
-import ToggleSwitch from "../../switch/ToggleSwitch";
-import { EditMenu } from "./Edit/EditMenu";
 import { Button } from "@/components/ui/button";
 import { ConfirmModal } from "../ConfirmModal";
 import { toast } from "sonner";
+import { EditTableNo } from "./Edit/EditTableNo";
+import { deleteTableNoAction, getTableNoAll } from "../../../../../../action/admin/TableNoAction";
+import CreateTableNo from "@/app/admin/table/create/page";
 
-export default function MenuTableCRUD() {
-    const [menus, setMenus] = useState<MenuLists[]>([]);
+export default function MenuTypeTableCRUD() {
     const [loading, setLoading] = useState(true);
-    const [editingMenu, setEditingMenu] = useState<MenuLists | null>(null);
+    const [editingTable, setEditingTable] = useState<TableNo | null>(null);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
     // ฟังก์ชัน fetch menus
-    const fetchMenus = async () => {
+    const [tableNo, setTableNo] = useState<TableNo[]>([]);
+
+    const fetchTable = async () => {
         setLoading(true);
-        const result = await getMenuAll();
+        const result = await getTableNoAll(); // ฟังก์ชัน fetch categories
         if (result.success) {
-            setMenus(result.data);
+            setTableNo(result.data);
         } else {
             console.error(result.error);
         }
@@ -42,22 +41,12 @@ export default function MenuTableCRUD() {
     };
 
     useEffect(() => {
-        fetchMenus();
+        fetchTable();
     }, []);
 
-    // Delete
-    const handleDelete = async (menuID: number, image?: string) => {
-        const confirmed = confirm("Are you sure you want to delete this menu?");
-        if (!confirmed) return;
 
-        const result = await deleteMenuAction(menuID, image);
-        alert(result.message);
 
-        if (result.success) {
-            fetchMenus(); // รีเฟรชเมนูใหม่
-        }
-    };
-
+  
     if (loading) {
         return (
             <div className="flex items-center justify-center p-10">
@@ -69,7 +58,6 @@ export default function MenuTableCRUD() {
 
     return (
         <>
-            {/* ตารางเมนู */}
             <Card className="shadow-lg rounded-2xl">
                 <CardContent>
                     <div className="flex justify-between items-center mb-4">
@@ -85,51 +73,21 @@ export default function MenuTableCRUD() {
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>ภาพ</TableHead>
-                                <TableHead>ชื่อเมนู</TableHead>
-                                <TableHead>ราคา</TableHead>
-                                <TableHead>สถานะ</TableHead>
-                                <TableHead>ประเภท</TableHead>
+                                <TableHead>หมายเลขโต๊ะ</TableHead>
+                                <TableHead>รายละเอียดโต๊ะ</TableHead>
                                 <TableHead className="text-right">การจัดการ</TableHead>
                             </TableRow>
                         </TableHeader>
 
                         <TableBody>
-                            {menus.map((menu) => (
-                                <TableRow key={menu.menuID}>
-                                    <TableCell>
-                                        <img
-                                            src={menu.image}
-                                            alt={menu.name}
-                                            className="h-12 w-12 object-cover rounded-md"
-                                        />
-                                    </TableCell>
-                                    <TableCell className="font-medium">{menu.name}</TableCell>
-                                    <TableCell>{Number(menu.price).toFixed(2)} ฿</TableCell>
-                                    <TableCell>
-                                        {/* Toggle Switch สำหรับเปลี่ยน isAvailable */}
-                                        <ToggleSwitch
-                                            isOn={menu.isAvailable}
-                                            label={menu.isAvailable ? "พร้อมขาย" : "หมด"}
-                                            onToggle={async (newState) => {
-                                                const res = await updateMenuAvailability(menu.menuID, newState);
-                                                if (res.success) {
-                                                    setMenus((prev) =>
-                                                        prev.map((m) =>
-                                                            m.menuID === menu.menuID ? { ...m, isAvailable: newState } : m
-                                                        )
-                                                    );
-                                                } else {
-                                                    alert(res.message);
-                                                }
-                                            }}
-                                        />
-                                    </TableCell>
-                                    <TableCell>{menu.type?.name}</TableCell>
-                                    <TableCell className="text-right">
+                            {tableNo.map((table) => (
+                                <TableRow key={table.tableNo}>
+                                    <TableCell>{table.tableNo}</TableCell>
+                                    <TableCell>{table.locationDetail}</TableCell>
+                                      <TableCell className="text-right">
                                         {/* ปุ่มแก้ไขเมนู */}
                                         <Button
-                                            onClick={() => setEditingMenu(menu)}
+                                            onClick={() => setEditingTable(table)}
                                             className="ml-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg px-4 py-2 shadow-md"
                                         >
                                             แก้ไข
@@ -137,14 +95,14 @@ export default function MenuTableCRUD() {
 
                                         {/* ปุ่มลบเมนู */}
                                         <ConfirmModal
-                                            title="ลบเมนู"
-                                            description={`คุณแน่ใจไหมว่าต้องการลบ "${menu.name}"?`}
+                                            title="ลบหมายเลขโต๊ะ"
+                                            description={`คุณแน่ใจไหมว่าต้องการลบ "${table.tableNo}"?`}
                                             onConfirm={async () => {
                                                 try {
-                                                    const result = await deleteMenuAction(menu.menuID, menu.fileID)
+                                                    const result = await deleteTableNoAction(table.tableNo)
                                                     if (result.success) {
                                                         toast.success(result.message)
-                                                        fetchMenus()
+                                                        fetchTable()
                                                     } else {
                                                         toast.error(result.message)
                                                     }
@@ -167,19 +125,19 @@ export default function MenuTableCRUD() {
             </Card>
 
             {/* Modal สำหรับ Edit */}
-            {editingMenu && (
+            {editingTable && (
                 <Modal
                     isOpen={true}
                     onClose={() => {
-                        setEditingMenu(null);
-                        fetchMenus(); // รีเฟรชเมนูหลังปิด modal
+                        setEditingTable(null);
+                        //fetchTable(); // รีเฟรชเมนูหลังปิด modal
                     }}
                 >
-                    <EditMenu
-                        menu={editingMenu}
+                    <EditTableNo
+                        tableNo={editingTable}
                         onSuccess={() => {
-                            setEditingMenu(null);
-                            fetchMenus(); // รีเฟรชเมนูหลังแก้ไขสำเร็จ
+                            setEditingTable(null);
+                            fetchTable(); // รีเฟรชเมนูหลังแก้ไขสำเร็จ
                         }}
                     />
                 </Modal>
@@ -191,17 +149,17 @@ export default function MenuTableCRUD() {
                     isOpen={true}
                     onClose={() => {
                         setIsCreateModalOpen(false);
-                        fetchMenus(); // รีเฟรชเมนูหลังปิด modal
+                        //fetchTable(); // รีเฟรชเมนูหลังปิด modal
                     }}
                 >
                     <h2 className="text-xl font-semibold mb-4">เพิ่มข้อมูลเมนู</h2>
                     <p className="text-gray-600 mb-4">
                         คุณสามารถสร้างเมนูใหม่ได้ที่นี่
                     </p>
-                    <CreateMenu
+                    <CreateTableNo
                         onSuccess={() => {
                             setIsCreateModalOpen(false); // ปิด modal
-                            fetchMenus();                // รีเฟรชเมนูใหม่
+                            fetchTable();                // รีเฟรชเมนูใหม่
                         }}
                     />
                 </Modal>

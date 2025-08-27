@@ -9,7 +9,13 @@ export const createMenuAction = async (prevState: any, formData: FormData) => {
     const file = formData.get("image") as File | null;
     let imageUrl: string | null = null;
     let fileId: string | null = null;
-
+    const name = formData.get("name");
+    const price= Number(formData.get("price"));
+    const typeID = Number(formData.get("menuType"))
+    if (!file || !name || !price || !typeID) {
+      return { message: "กรอกข้อมูลไม่สมบูรณ์", success: false };
+    }
+    
 
     if (file) {
       const uploadForm = new FormData();

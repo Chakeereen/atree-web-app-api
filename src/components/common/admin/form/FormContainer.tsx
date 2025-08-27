@@ -32,8 +32,9 @@ export const FormContainer = ({ action, children, onSuccess, refreshOnSuccess }:
       if(!state.success) {
         toast.error(state.message)
       }
-      toast.success(state.message)
-
+      else {
+        toast.success(state.message)
+      }
       // if (state.success && refreshOnSuccess) {
       //   router.refresh() // 🔥 รีเฟรชหน้าอัตโนมัติ
       // }

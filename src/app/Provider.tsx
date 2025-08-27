@@ -1,4 +1,5 @@
-import { ThemeProvider } from "next-themes"
+import { ThemeProvider } from "./theme-provider"
+
 
 const Provider = ({ children }: { children: React.ReactNode }) => {
     return (

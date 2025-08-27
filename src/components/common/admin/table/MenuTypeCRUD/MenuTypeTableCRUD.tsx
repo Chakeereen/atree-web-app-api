@@ -16,8 +16,10 @@ import { MenuType } from "../../../../../../utils/type";
 import Modal from "@/components/common/Modal";
 import { deleteMenuTypeAction, getMenuTypeAll } from "../../../../../../action/admin/MenuTypeAction";
 import { EditType } from "./Edit/EditType";
-import MenuTypeActions from "./MenuTypeActions";
 import CreateMenuType from "@/app/admin/menu/menuType/create/page";
+import { Button } from "@/components/ui/button";
+import { ConfirmModal } from "../ConfirmModal";
+import { toast } from "sonner";
 
 export default function MenuTypeTableCRUD() {
     const [loading, setLoading] = useState(true);
@@ -43,15 +45,8 @@ export default function MenuTypeTableCRUD() {
     }, []);
 
 
-    // Delete
-    const handleDeleteCategory = async (categoryId: number) => {
-        const confirmed = confirm("คุณแน่ใจว่าต้องการลบประเภทนี้?");
-        if (!confirmed) return;
 
-        const result = await deleteMenuTypeAction(categoryId);
-        alert(result.message);
-        if (result.success) fetchCategories();
-    };
+  
     if (loading) {
         return (
             <div className="flex items-center justify-center p-10">
@@ -90,11 +85,37 @@ export default function MenuTypeTableCRUD() {
                                 <TableRow key={category.typeID}>
                                     <TableCell>{category.typeID}</TableCell>
                                     <TableCell>{category.name}</TableCell>
-                                    <TableCell className="text-right">
-                                        <MenuTypeActions
-                                            menuType={category}
-                                            onEdit={(category) => setEditingCategory(category)}
-                                            onDelete={(typeID) => handleDeleteCategory(typeID)}
+                                      <TableCell className="text-right">
+                                        {/* ปุ่มแก้ไขเมนู */}
+                                        <Button
+                                            onClick={() => setEditingCategory(category)}
+                                            className="ml-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg px-4 py-2 shadow-md"
+                                        >
+                                            แก้ไข
+                                        </Button>
+
+                                        {/* ปุ่มลบเมนู */}
+                                        <ConfirmModal
+                                            title="ลบประเภทเมนู"
+                                            description={`คุณแน่ใจไหมว่าต้องการลบ "${category.name}"?`}
+                                            onConfirm={async () => {
+                                                try {
+                                                    const result = await deleteMenuTypeAction(category.typeID)
+                                                    if (result.success) {
+                                                        toast.success(result.message)
+                                                        fetchCategories()
+                                                    } else {
+                                                        toast.error(result.message)
+                                                    }
+                                                } catch (err) {
+                                                    toast.error("เกิดข้อผิดพลาด")
+                                                }
+                                            }}
+                                            trigger={
+                                                <Button className="ml-2 bg-red-500 hover:bg-red-600 text-white rounded-lg px-4 py-2 shadow-md">
+                                                    ลบ
+                                                </Button>
+                                            }
                                         />
                                     </TableCell>
                                 </TableRow>
