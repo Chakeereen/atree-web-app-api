@@ -29,6 +29,7 @@ model Admin {
   password String
   image    String
   fileID   String
+  role     String @default("admin")
 }
 
 model Table {
@@ -48,6 +49,7 @@ model Orders {
   tableNO   Int
   serviceID Int
   dateTime  DateTime
+  role      String   @default("customer")
 
   table    Table         @relation(fields: [tableNO], references: [tableNo])
   service  ServiceState  @relation(fields: [serviceID], references: [serviceID])
@@ -147,6 +149,7 @@ model Staff {
   password String
   image    String?
   fileID   String?
+  role     String  @default("staff")
 
   payments  Payment[]
   loginLogs LoginLog[]
