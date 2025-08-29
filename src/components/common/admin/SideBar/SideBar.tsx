@@ -1,48 +1,68 @@
-"use client"
+"use client";
 
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarHeader,
-  useSidebar,
-} from "@/components/ui/sidebar"
-import { Home, Users, Settings } from "lucide-react"
-import Link from "next/link"
+import { useSidebar } from "@/context/SidebarContext";
+import { cn } from "@/lib/utils";
+import { Home, Settings, Users, Menu } from "lucide-react";
+import Link from "next/link";
 
-export function AppSidebar() {
-  const { open } = useSidebar() // ตรวจสอบ state เปิด/ปิด
-
-  const menu = [
-    { name: "Dashboard", icon: <Home size={18} />, href: "/admin" },
-    { name: "Users", icon: <Users size={18} />, href: "/admin/users" },
-    { name: "Settings", icon: <Settings size={18} />, href: "/admin/settings" },
-  ]
+export default function Sidebar() {
+  const { open, toggle } = useSidebar();
 
   return (
-    
-    <Sidebar
-      className={`relative h-full transition-all duration-300 ${
-        open ? "w-64" : "w-16"
-      } border-r  bg-gray-100 `}
-       side='left'
+    <aside
+      className={cn(
+        "h-screen bg-sidebar text-sidebar-foreground border-r border-sidebar-border transition-all duration-300 flex flex-col",
+        open ? "sidebar-open" : "sidebar-closed"
+      )}
     >
-      <SidebarHeader>{open && "Admin Menu"}</SidebarHeader>
-      <SidebarContent>
-        {menu.map((item) => (
-          <SidebarGroup key={item.name}>
+      {/* Toggle Button */}
+      <div className="flex items-center justify-between">
+        {open && <span className="font-bold text-lg px-4 py-3">Admin</span>}
+        <button
+          onClick={toggle}
+          className="p-3 hover:bg-sidebar-accent"
+        >
+          <Menu size={20} />
+        </button>
+      </div>
+
+      {/* Menu */}
+      <nav className="flex-1">
+        <ul className="m-0 p-0">
+          <li>
             <Link
-              href={item.href}
-              className="flex items-center gap-2 p-2 hover:bg-gray-200 rounded"
+              href="/admin"
+              className="flex items-center gap-3 p-3 hover:bg-sidebar-accent rounded-none"
             >
-              {item.icon}
-              {open && <span>{item.name}</span>}
+              <Home size={20} />
+              {open && <span>Dashboard</span>}
             </Link>
-          </SidebarGroup>
-        ))}
-      </SidebarContent>
-      <SidebarFooter>{open && "Footer"}</SidebarFooter>
-    </Sidebar>
-  )
+          </li>
+          <li>
+            <Link
+              href="/admin/users"
+              className="flex items-center gap-3 p-3 hover:bg-sidebar-accent rounded-none"
+            >
+              <Users size={20} />
+              {open && <span>Users</span>}
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/admin/settings"
+              className="flex items-center gap-3 p-3 hover:bg-sidebar-accent rounded-none"
+            >
+              <Settings size={20} />
+              {open && <span>Settings</span>}
+            </Link>
+          </li>
+        </ul>
+      </nav>
+
+      {/* Footer (ถ้ามี) */}
+      <div className="p-0 m-0">
+        {/* ใส่ footer content ที่นี่ */}
+      </div>
+    </aside>
+  );
 }
