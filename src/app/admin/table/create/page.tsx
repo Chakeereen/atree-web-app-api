@@ -5,11 +5,11 @@ import { FormContainer } from "@/components/common/admin/form/FormContainer";
 import { createTableNoAction } from "../../../../../action/admin/TableNoAction";
 
 
-interface CreateMenuTypeProps {
+interface CreateTableProps {
   onSuccess?: () => void
 }
 
-const CreateTableNo = ({ onSuccess }: CreateMenuTypeProps) => {
+const CreateTableNo = ({ onSuccess }: CreateTableProps) => {
     return (
         <section>
             <h1 className="text-2xl font-semibold mb-8 capitalize">new menu</h1>

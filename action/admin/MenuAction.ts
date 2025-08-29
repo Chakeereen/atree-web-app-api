@@ -21,7 +21,7 @@ export const createMenuAction = async (prevState: any, formData: FormData) => {
       const uploadForm = new FormData();
       uploadForm.append("file", file);
 
-      const uploadRes = await fetch("http://localhost:3000/api/admin/image", {
+      const uploadRes = await fetch("http://localhost:3000/api/admin/menu/image", {
         method: "POST",
         body: uploadForm,
       });
@@ -76,12 +76,10 @@ export const editMenuAction = async (prevState: any, formData: FormData) => {
     let imageUrl = oldImage;
     let fileId = oldFileId;
 
-    console.log(formData)
-
     if (file && file.size > 0) {
       // ลบไฟล์เก่า (ถ้ามี)
       if (oldFileId) {
-        await fetch("http://localhost:3000/api/admin/image", {
+        await fetch("http://localhost:3000/api/admin/menu/image", {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ fileId: oldFileId }),

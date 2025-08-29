@@ -53,7 +53,6 @@ model Orders {
   service  ServiceState  @relation(fields: [serviceID], references: [serviceID])
   details  OrderDetail[]
   payments Payment[]
-
 }
 
 model OrderDetail {
@@ -62,6 +61,7 @@ model OrderDetail {
   menuID       Int
   trackOrderID Int
   amount       Int
+  price        Decimal  @db.Decimal(10, 2)
   dateTime     DateTime
   updateAT     DateTime @updatedAt
 
@@ -93,7 +93,7 @@ model MenuLists {
   menuID      Int      @id @default(autoincrement())
   name        String
   price       Decimal  @db.Decimal(10, 2) // ใช้ Decimal
-  isAvailable Boolean @default(true)
+  isAvailable Boolean  @default(true)
   image       String
   fileID      String
   typeID      Int
@@ -116,7 +116,7 @@ model Payment {
   totalCost Decimal       @db.Decimal(10, 2) // เปลี่ยนเป็น Decimal
   dateTime  DateTime      @default(now())
   status    PaymentStatus // enum แทน paymentConfirm
-  staffID   Int
+  staffID   String
   methodID  Int
 
   order  Orders    @relation(fields: [orderNo], references: [orderNo])
@@ -138,14 +138,15 @@ model PayMethod {
 }
 
 model Staff {
-  staffID  Int    @id @default(autoincrement())
+  staffNo  Int     @unique @default(autoincrement())
+  staffID  String  @id @default(uuid())
   name     String
   surname  String
-  telNo    String
-  username String
+  telNo    String  @unique
+  email    String  @unique
   password String
-  image    String
-  fileID   String
+  image    String?
+  fileID   String?
 
   payments  Payment[]
   loginLogs LoginLog[]
@@ -153,7 +154,7 @@ model Staff {
 
 model LoginLog {
   logNo       Int      @id @default(autoincrement())
-  staffID     Int
+  staffID     String
   loginResult String
   dateTime    DateTime @default(now())
 

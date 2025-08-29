@@ -4,7 +4,7 @@ import { SubmitButton } from "@/components/common/admin/form/Button";
 
 import FormInput from "@/components/common/admin/form/FormInput";
 import ImageInput from "@/components/common/admin/form/ImageInput";
-import { Menu } from "../../../../../../../utils/type";
+import { MenuLists } from "../../../../../../../utils/type";
 import { editMenuAction } from "../../../../../../../action/admin/MenuAction";
 import { FormContainer } from "../../../form/FormContainer";
 import { useRouter } from "next/navigation";
@@ -12,7 +12,7 @@ import { MenuCategoryInput } from "../../../form/MenuCategoryInput";
 
 
 interface EditMenuProps {
-  menu: Menu;
+  menu: MenuLists;
   onSuccess?: () => void; // optional callback หลังแก้ไขเสร็จ
 }
 

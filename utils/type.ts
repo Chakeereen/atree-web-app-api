@@ -13,7 +13,7 @@ export interface MenuLists {
 export interface MenuType {
   typeID: number;
   name: string;
-  
+
   menus?: MenuLists[]; // optional เพราะบางครั้งยังไม่มี relation
 }
 
@@ -64,6 +64,7 @@ export interface OrderDetail {
   menuID: number;
   trackOrderID: number;
   amount: number;
+  price: number;
   dateTime: Date;
   updateAT: Date;
   order?: Orders;
@@ -115,11 +116,12 @@ export interface PayMethod {
 
 // Staff
 export interface Staff {
-  staffID: number;
+  staffNo: number;
+  staffID: string;
   name: string;
   surname: string;
   telNo: string;
-  username: string;
+  email: string;
   password: string;
   image: string;
   fileID: string;

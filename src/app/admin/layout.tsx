@@ -1,24 +1,19 @@
-'use client'
-import { AppSidebar } from "@/components/common/admin/SideBar/SideBar"
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import Sidebar from "@/components/common/admin/Sidebar/Sidebar";
+import { SidebarProvider } from "@/context/SidebarContext";
 
-
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function AdminLayout({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
     return (
-    
-
-        <SidebarProvider className="container grid-cols-[auto_1fr]">
-            
-                {/* Sidebar */}
-                <AppSidebar />
-
-                {/* Main content */}
-                <main className="container p-4 overflow-auto">
-                    <SidebarTrigger className="mb-4" />
+        <SidebarProvider>
+            <div className="flex h-screen w-full">
+                <Sidebar />
+                <main className="flex-1 p-6 overflow-auto bg-background">
                     {children}
                 </main>
-            
+            </div>
         </SidebarProvider>
-        
-    )
+    );
 }
