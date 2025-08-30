@@ -3,7 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 
-
+const base_Url = process.env.API_URL as string;
 
 
 export const createAdminAction = async (prevState: any, formData: FormData) => {
