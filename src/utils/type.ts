@@ -1,3 +1,4 @@
+// MenuLists
 export interface MenuLists {
   menuID: number;
   name: string;
@@ -6,36 +7,39 @@ export interface MenuLists {
   image: string;
   fileID: string;
   isAvailable: boolean;
-
+  
   type?: MenuType;
+  details?: OrderDetail[];
 }
 
+// MenuType
 export interface MenuType {
   typeID: number;
   name: string;
-
-  menus?: MenuLists[]; // optional เพราะบางครั้งยังไม่มี relation
-}
-
-export interface TableNo {
-  tableNo: number;
-  locationDetail: string;
-
-  orders?: Orders[]; // optional เพราะบางครั้งเราไม่ได้ include relation
-}
-
-export interface Admin {
-  username: string;
-  password: string;
-  image: string;
-  fileID: string;
+  menus?: MenuLists[];
 }
 
 // Table
 export interface TableNo {
   tableNo: number;
   locationDetail: string;
+  dateTime: Date;
+  updateAt: Date;
   orders?: Orders[];
+}
+
+// Admin
+export interface Admin {
+  adminID: string;
+  email: string;
+  password: string;
+  name: string;
+  surname: string;
+  image: string;
+  fileID: string;
+  role: string;
+  dateTime: Date;
+  updateAt: Date;
 }
 
 // ServiceState
@@ -51,6 +55,8 @@ export interface Orders {
   tableNO: number;
   serviceID: number;
   dateTime: Date;
+  updateAt: Date;
+  role: string;
   table?: TableNo;
   service?: ServiceState;
   details?: OrderDetail[];
@@ -65,6 +71,7 @@ export interface OrderDetail {
   trackOrderID: number;
   amount: number;
   price: number;
+  totalCost: number;
   dateTime: Date;
   updateAT: Date;
   order?: Orders;
@@ -91,13 +98,15 @@ export interface OrderTrack {
   details?: OrderDetail[];
 }
 
+// Payment
 export interface Payment {
   paymentNo: number;
   orderNo: number;
-  totalCost: number; // Decimal mapped to number
+  totalCost: number;
   dateTime: Date;
+  updateAt: Date;
   status: PaymentStatus;
-  staffID: number;
+  staffID: string;
   methodID: number;
   order?: Orders;
   staff?: Staff;
@@ -123,8 +132,11 @@ export interface Staff {
   telNo: string;
   email: string;
   password: string;
-  image: string;
-  fileID: string;
+  image?: string;
+  fileID?: string;
+  role: string;
+  dateTime: Date;
+  updateAt: Date;
   payments?: Payment[];
   loginLogs?: LoginLog[];
 }
@@ -132,7 +144,7 @@ export interface Staff {
 // LoginLog
 export interface LoginLog {
   logNo: number;
-  staffID: number;
+  staffID: string;
   loginResult: string;
   dateTime: Date;
   staff?: Staff;

@@ -3,10 +3,11 @@
 import { SubmitButton } from "@/components/common/admin/Form/Button";
 
 import FormInput from "@/components/common/admin/Form/FormInput";
-import { MenuType } from "../../../../../../../utils/type";
+
 import { FormContainer } from "../../../Form/FormContainer";
 import { useRouter } from "next/navigation";
-import { editMenuTypeAction } from "../../../../../../../action/admin/MenuTypeAction";
+import { editMenuTypeAction } from "@/action/admin/MenuTypeAction";
+import { MenuType } from "@prisma/client";
 
 interface EditMenuTypeProps {
   menuType: MenuType;

@@ -4,7 +4,8 @@ import { useState } from "react";
 import { SubmitButton } from "@/components/common/admin/Form/Button";
 import FormInput from "@/components/common/admin/Form/FormInput";
 import { LoginFormContainer } from "./LoginFormContainer";
-import { loginAdminAction } from "@/action/admin/LoginAction";
+import { loginAdminAction } from "@/utils/admin";
+
 
 
 interface LoginProps {

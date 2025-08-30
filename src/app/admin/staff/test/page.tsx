@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -9,37 +10,34 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
+  
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  try {
+    const res = await fetch("http://localhost:3000/api/auth/staff", {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+      headers: { "Content-Type": "application/json" },
+    });
 
-    
-    try {
-      const res = await fetch("http://localhost:3000/api/auth/staff", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+    const data = await res.json();
 
-      if (!res.ok) {
-        const data = await res.json();
-        setError(data.message || "Login failed");
-        return;
-      }
-
-      const data = await res.json();
-      // เก็บ token ใน localStorage
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("role", data.user.role);
-
-      // redirect ไปหน้า dashboard หรือหน้าอื่น
-      router.push("/");
-    } catch (err) {
-      console.error(err);
-      setError("Server error");
+    if (!res.ok) {
+      throw new Error(data.message || "Login failed");
     }
-  };
 
+    // ตรวจสอบ user ก่อนเข้าถึง role
+    const role = data.user?.role || data.role || "admin"; // fallback ถ้าไม่มี user
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("role", role);
+
+    // redirect
+    router.push("/");
+  } catch (err: any) {
+    console.error(err);
+    toast.error(err.message);
+  }
+};
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <form

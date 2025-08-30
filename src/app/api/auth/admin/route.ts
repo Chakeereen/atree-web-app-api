@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
     }
 
     // สร้าง tokens
-    const accessToken = generateAccessToken(admin.adminID);
+    const accessToken = generateAccessToken(admin.adminID,admin.role);
     const refreshToken = generateRefreshToken(admin.adminID);
 
     // ส่ง response + เก็บ refresh token ใน cookie

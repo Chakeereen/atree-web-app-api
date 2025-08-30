@@ -4,9 +4,9 @@ import jwt from "jsonwebtoken";
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET as string;
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET as string;
 
-// สร้าง Access Token (อายุสั้น)
-export function generateAccessToken(userId: string) {
-  return jwt.sign({ userId }, ACCESS_TOKEN_SECRET, { expiresIn: "1h" });
+// สร้าง Access Token (อายุสั้น) พร้อม role
+export function generateAccessToken(userId: string, role: string) {
+  return jwt.sign({ userId, role }, ACCESS_TOKEN_SECRET, { expiresIn: "1h" });
 }
 
 // สร้าง Refresh Token (อายุยาว)

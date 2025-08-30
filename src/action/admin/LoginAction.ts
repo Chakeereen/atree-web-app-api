@@ -66,36 +66,3 @@ export const createAdminAction = async (prevState: any, formData: FormData) => {
   }
 };
 
-
-export const loginAdminAction = async (prevState: any, formData: FormData) => {
-
-    try {
-        const email = formData.get("email") as string;
-        const password = formData.get("password") as string;
-
-        const res = await fetch('http://localhost:3000/api/auth/admin', {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password }),
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) {
-            return { success: false, message: data.error || "Login ไม่สำเร็จ" };
-        }
-
-        // เก็บ token ใน localStorage
-        if (typeof window !== "undefined") {
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("role", data.admin.role);
-        }
-        
-        return { success: true, message: "Login สำเร็จ",};
-        
-    } catch (error) {
-        console.error(error);
-        return { success: false, message: "เกิดข้อผิดพลาดในการ login" };
-    }
-    
-};
