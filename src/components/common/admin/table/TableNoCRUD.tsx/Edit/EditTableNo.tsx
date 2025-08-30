@@ -1,10 +1,10 @@
 "use client";
 
-import { SubmitButton } from "@/components/common/admin/form/Button";
+import { SubmitButton } from "@/components/common/admin/Form/Button";
 
-import FormInput from "@/components/common/admin/form/FormInput";
+import FormInput from "@/components/common/admin/Form/FormInput";
 import { TableNo } from "../../../../../../../utils/type";
-import { FormContainer } from "../../../form/FormContainer";
+import { FormContainer } from "../../../Form/FormContainer";
 import { editTableNoAction } from "../../../../../../../action/admin/TableNoAction";
 
 interface EditTableNoProps {

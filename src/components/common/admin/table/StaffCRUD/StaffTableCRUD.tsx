@@ -11,14 +11,20 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Loader2 } from "lucide-react";
-import { Staff } from "../../../../../../utils/type";
+
 import Modal from "@/components/common/Modal";
 import { Button } from "@/components/ui/button";
-import { ConfirmModal } from "../ConfirmModal";
+
 import { toast } from "sonner";
-import { EditStaff } from "./Edit/EditStaff";
-import { deleteStaffAction, getStaffAll } from "../../../../../../action/admin/StaffAction";
+
+
 import CreateStaff from "@/app/admin/staff/create/page";
+import { deleteStaffAction, getStaffAll } from "@/action/admin/StaffAction";
+import { Staff } from "@/utils/type";
+import { EditStaff } from "./Edit/EditStaff";
+import { ConfirmModal } from "../ConfirmModal";
+
+
 
 export default function StaffTableCRUD() {
     const [staffs, setStaff] = useState<Staff[]>([]);

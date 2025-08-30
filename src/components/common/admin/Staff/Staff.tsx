@@ -1,4 +1,4 @@
-import StaffTableCRUD from "../Table/StaffTableCRUD/StaffTableCRUD"
+import StaffTableCRUD from "../Table/StaffCRUD/StaffTableCRUD"
 
 const Staff = () => {
   return (

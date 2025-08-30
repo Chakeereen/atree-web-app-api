@@ -1,39 +1,53 @@
+// src/app/api/auth/staff/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
-import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
+import { prisma } from "@/lib/prisma";
+import { generateAccessToken, generateRefreshToken } from "@/utils/่jwt";
 
-const JWT_SECRET = process.env.JWT_SECRET as string;
+
 
 export async function POST(req: NextRequest) {
-  const { email, password } = await req.json();
+  try {
+    const { email, password } = await req.json();
 
-  console.log("Login attempt:", email, password);
-
-  const user = await prisma.staff.findUnique({ where: { email } });
-  if (!user) 
-    return NextResponse.json({ message: "Invalid email" }, { status: 401 });
-
-  const isValid = await bcrypt.compare(password, user.password);
-  console.log("Password valid:", isValid);
-  if (!isValid) 
-    return NextResponse.json({ message: "Invalid password" }, { status: 401 });
-
-  // สร้าง JWT
-  const token = jwt.sign(
-    { userId: user.staffID, role: user.role, name: user.name },
-    JWT_SECRET,
-    { expiresIn: "1h" }
-  );
-
-  // ส่ง token และ user object กลับ
-  return NextResponse.json({
-    token,
-    user: {
-      id: user.staffID,
-      email: user.email,
-      role: user.role,
-      name: user.name
+    // หา staff จาก DB
+    const staff = await prisma.staff.findUnique({ where: { email } });
+    if (!staff) {
+      return NextResponse.json({ error: "Staff not found" }, { status: 404 });
     }
-  });
+
+    // ตรวจสอบ password
+    const validPassword = await bcrypt.compare(password, staff.password);
+    if (!validPassword) {
+      return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
+    }
+
+    // สร้าง tokens
+    const accessToken = generateAccessToken(staff.staffID); // <-- ใช้ staffID
+    const refreshToken = generateRefreshToken(staff.staffID);
+
+    // ตอบกลับ Access Token + เก็บ Refresh Token ใน Cookie
+    const res = NextResponse.json({
+      message: "Login successful",
+      accessToken,
+      staff: {
+        staffID: staff.staffID,
+        name: staff.name,
+        email: staff.email,
+        role: staff.role,
+      },
+    });
+
+    res.cookies.set("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+      maxAge: 7 * 24 * 60 * 60, // 7 วัน
+    });
+
+    return res;
+  } catch (err: any) {
+    console.error("Login error:", err);
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
 }

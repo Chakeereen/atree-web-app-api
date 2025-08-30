@@ -1,5 +1,6 @@
 import MenuTypeTableCRUD from "@/components/common/admin/Table/MenuTypeCRUD/MenuTypeTableCRUD"
 
+
 const MenuType = () => {
   return (
     <div className="container mx-auto p-6">

@@ -1,8 +1,8 @@
 'use client'
-import { SubmitButton } from "@/components/common/admin/form/Button";
-import FormInput from "@/components/common/admin/form/FormInput"
-import { FormContainer } from "@/components/common/admin/form/FormContainer";
-import { createMenuTypeAction } from "../../../../../../action/admin/MenuTypeAction";
+import { SubmitButton } from "@/components/common/admin/Form/Button";
+import FormInput from "@/components/common/admin/Form/FormInput"
+import { FormContainer } from "@/components/common/admin/Form/FormContainer";
+import { createMenuTypeAction } from "@/action/admin/MenuTypeAction";
 
 interface CreateMenuTypeProps {
   onSuccess?: () => void

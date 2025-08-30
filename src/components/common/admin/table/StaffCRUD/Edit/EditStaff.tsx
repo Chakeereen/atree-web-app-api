@@ -1,14 +1,14 @@
 "use client";
 
-import { SubmitButton } from "@/components/common/admin/form/Button";
+import { SubmitButton } from "@/components/common/admin/Form/Button";
 
-import FormInput from "@/components/common/admin/form/FormInput";
-import ImageInput from "@/components/common/admin/form/ImageInput";
-import { Staff } from "../../../../../../../utils/type";
-import { editMenuAction } from "../../../../../../../action/admin/MenuAction";
-import { FormContainer } from "../../../form/FormContainer";
+import FormInput from "@/components/common/admin/Form/FormInput";
+import ImageInput from "@/components/common/admin/Form/ImageInput";
+
+import { FormContainer } from "../../../Form/FormContainer";
 import { useRouter } from "next/navigation";
-import { MenuCategoryInput } from "../../../form/MenuCategoryInput";
+import { Staff } from "@/utils/type";
+import { editMenuAction } from "@/action/admin/MenuAction";
 
 
 interface EditStaffProps {

@@ -25,16 +25,23 @@ model Post {
 }
 
 model Admin {
-  username String @id
+  adminID  String   @id @default(uuid())
+  email    String   @unique
   password String
+  name     String
+  surname  String
   image    String
   fileID   String
-  role     String @default("admin")
+  role     String   @default("admin")
+  dateTime DateTime @default(now())
+  updateAt DateTime @updatedAt
 }
 
 model Table {
   tableNo        Int      @id @default(autoincrement())
   locationDetail String
+  dateTime       DateTime @default(now())
+  updateAt       DateTime @updatedAt
   orders         Orders[]
 }
 
@@ -48,7 +55,8 @@ model Orders {
   orderNo   Int      @id @default(autoincrement())
   tableNO   Int
   serviceID Int
-  dateTime  DateTime
+  dateTime  DateTime @default(now())
+  updateAt  DateTime @updatedAt
   role      String   @default("customer")
 
   table    Table         @relation(fields: [tableNO], references: [tableNo])
@@ -64,6 +72,7 @@ model OrderDetail {
   trackOrderID Int
   amount       Int
   price        Decimal  @db.Decimal(10, 2)
+  totalCost    Decimal  @db.Decimal(10, 2)
   dateTime     DateTime
   updateAT     DateTime @updatedAt
 
@@ -117,6 +126,7 @@ model Payment {
   orderNo   Int
   totalCost Decimal       @db.Decimal(10, 2) // เปลี่ยนเป็น Decimal
   dateTime  DateTime      @default(now())
+  updateAt  DateTime      @updatedAt
   status    PaymentStatus // enum แทน paymentConfirm
   staffID   String
   methodID  Int
@@ -140,16 +150,18 @@ model PayMethod {
 }
 
 model Staff {
-  staffNo  Int     @unique @default(autoincrement())
-  staffID  String  @id @default(uuid())
+  staffNo  Int      @unique @default(autoincrement())
+  staffID  String   @id @default(uuid())
   name     String
   surname  String
-  telNo    String  @unique
-  email    String  @unique
+  telNo    String   @unique
+  email    String   @unique
   password String
   image    String?
   fileID   String?
-  role     String  @default("staff")
+  role     String   @default("staff")
+  dateTime DateTime @default(now())
+  updateAt DateTime @updatedAt
 
   payments  Payment[]
   loginLogs LoginLog[]

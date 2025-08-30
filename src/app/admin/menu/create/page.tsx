@@ -1,10 +1,10 @@
 'use client'
-import { SubmitButton } from "@/components/common/admin/form/Button";
-import FormInput from "@/components/common/admin/form/FormInput"
-import { createMenuAction } from "../../../../../action/admin/MenuAction";
-import ImageInput from "@/components/common/admin/form/ImageInput";
-import { FormContainer } from "@/components/common/admin/form/FormContainer";
-import { MenuCategoryInput } from "@/components/common/admin/form/MenuCategoryInput";
+import { SubmitButton } from "@/components/common/admin/Form/Button";
+import FormInput from "@/components/common/admin/Form/FormInput"
+import ImageInput from "@/components/common/admin/Form/ImageInput";
+import { FormContainer } from "@/components/common/admin/Form/FormContainer";
+import { MenuCategoryInput } from "@/components/common/admin/Form/MenuCategoryInput";
+import { createMenuAction } from "@/action/admin/MenuAction";
 
 
 interface CreateMenuProps {

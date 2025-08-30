@@ -1,4 +1,5 @@
-import StaffTableCRUD from "@/components/common/admin/Table/StaffTableCRUD/StaffTableCRUD"
+import StaffTableCRUD from "@/components/common/admin/Table/StaffCRUD/StaffTableCRUD"
+
 
 const page = () => {
   return (

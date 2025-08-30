@@ -2,8 +2,9 @@
 
 import { useSidebar } from "@/context/SidebarContext";
 import { cn } from "@/lib/utils";
-import { Home, Settings, Users, Menu } from "lucide-react";
+import { Home, Settings, Users, Menu} from "lucide-react";
 import Link from "next/link";
+import Logout from "../Login/Logout";
 
 export default function Sidebar() {
   const { open, toggle } = useSidebar();
@@ -55,6 +56,10 @@ export default function Sidebar() {
               <Settings size={20} />
               {open && <span>Settings</span>}
             </Link>
+          </li>
+             <li>
+             
+            <Logout/>
           </li>
         </ul>
       </nav>

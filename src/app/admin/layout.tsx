@@ -1,4 +1,5 @@
-import Sidebar from "@/components/common/admin/Sidebar/Sidebar";
+
+import Sidebar from "@/components/common/admin/SideBar/SideBar";
 import { SidebarProvider } from "@/context/SidebarContext";
 
 export default function AdminLayout({

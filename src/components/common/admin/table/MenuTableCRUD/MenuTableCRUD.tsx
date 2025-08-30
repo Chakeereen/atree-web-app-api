@@ -11,17 +11,15 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Loader2 } from "lucide-react";
-
-import { deleteMenuAction, getMenuAll, updateMenuAvailability } from "../../../../../../action/admin/MenuAction";
-import { MenuLists } from "../../../../../../utils/type";
 import Modal from "@/components/common/Modal";
-
 import CreateMenu from "@/app/admin/menu/create/page";
-import ToggleSwitch from "../../switch/ToggleSwitch";
-import { EditMenu } from "./Edit/EditMenu";
+import ToggleSwitch from "../../Switch/ToggleSwitch";
 import { Button } from "@/components/ui/button";
-import { ConfirmModal } from "../ConfirmModal";
 import { toast } from "sonner";
+import { MenuLists } from "@/utils/type";
+import { deleteMenuAction, getMenuAll, updateMenuAvailability } from "@/action/admin/MenuAction";
+import { ConfirmModal } from "../ConfirmModal";
+import { EditMenu } from "./Edit/EditMenu";
 
 export default function MenuTableCRUD() {
     const [menus, setMenus] = useState<MenuLists[]>([]);
@@ -44,19 +42,6 @@ export default function MenuTableCRUD() {
     useEffect(() => {
         fetchMenus();
     }, []);
-
-    // Delete
-    const handleDelete = async (menuID: number, image?: string) => {
-        const confirmed = confirm("Are you sure you want to delete this menu?");
-        if (!confirmed) return;
-
-        const result = await deleteMenuAction(menuID, image);
-        alert(result.message);
-
-        if (result.success) {
-            fetchMenus(); // รีเฟรชเมนูใหม่
-        }
-    };
 
     if (loading) {
         return (

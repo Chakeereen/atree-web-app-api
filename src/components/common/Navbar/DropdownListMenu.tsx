@@ -10,7 +10,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { links } from "../../../../utils/links";
+import { links } from "@/utils/links";
+
 
 
 
