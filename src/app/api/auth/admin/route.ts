@@ -5,7 +5,6 @@ import bcrypt from "bcryptjs";
 import { generateAccessToken, generateRefreshToken } from "@/utils/่jwt";
 
 
-
 export async function POST(req: NextRequest) {
   try {
     const { email, password } = await req.json();
@@ -27,13 +26,13 @@ export async function POST(req: NextRequest) {
     }
 
     // สร้าง tokens
-    const accessToken = generateAccessToken(admin.adminID,admin.role);
+    const accessToken = generateAccessToken(admin.adminID, admin.role);
     const refreshToken = generateRefreshToken(admin.adminID);
 
-    // ส่ง response + เก็บ refresh token ใน cookie
+    // สร้าง response
     const res = NextResponse.json({
       message: "Login successful",
-      token: accessToken,
+      token:accessToken,
       user: {
         id: admin.adminID,
         name: admin.name,
@@ -43,6 +42,15 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    // เก็บ accessToken ใน cookie
+    res.cookies.set("accessToken", accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+      maxAge: 60 * 60, // 1 ชั่วโมง
+    });
+
+    // เก็บ refreshToken ใน cookie
     res.cookies.set("refreshToken", refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",

@@ -5,26 +5,36 @@ import { toast } from "sonner"; // import toaster
 export const useLogoutAdmin = () => {
   const router = useRouter();
 
-  const logoutAdmin = () => {
-    // ลบ token และ role
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("token");
-      localStorage.removeItem("role");
-      toast.success("Logout สำเร็จ");
-    }
-    else{
-      toast.warning("คุณไม่ได้อยู่ในระบบ");
-    }
+  const logoutAdmin = async () => {
+    try {
+      // 1. เรียก API logout เพื่อลบ cookie
+      const res = await fetch("http://localhost:3000/api/auth/admin/logout", {
+        method: "POST",
+      });
 
-    // แสดง toast
-   
+      // 2. ลบข้อมูลใน localStorage
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+      }
 
-    // redirect ไปหน้า login
-    router.push("/login");
+      // 3. แสดง toast และ redirect
+      if (res.ok) {
+        toast.success("Logout สำเร็จ");
+      } else {
+        toast.error("เกิดข้อผิดพลาดในการ logout");
+      }
+
+      router.push("/login"); // redirect หลัง logout
+    } catch (err) {
+      console.error(err);
+      toast.error("เกิดข้อผิดพลาด");
+    }
   };
 
   return logoutAdmin;
 };
+
 
 export const loginAdminAction = async (prevState: any, formData: FormData) => {
   try {

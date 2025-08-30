@@ -4,7 +4,7 @@ import { SubmitButton } from "@/components/common/admin/Form/Button";
 import FormInput from "@/components/common/admin/Form/FormInput";
 import ImageInput from "@/components/common/admin/Form/ImageInput";
 import { FormContainer } from "@/components/common/admin/Form/FormContainer";
-import { createAdminAction } from "@/action/admin/LoginAction";
+import { createAdminAction } from "@/action/admin/AdminAction";
 
 
 
