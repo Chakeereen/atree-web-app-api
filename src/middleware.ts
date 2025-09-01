@@ -21,8 +21,10 @@ export async function middleware(req: NextRequest) {
 
     try {
       // ตรวจ token
-      const { payload } = await jwtVerify(token, JWT_SECRET, {
-        algorithms: ["HS256"], // ต้องตรงกับ token ที่สร้างด้วย jsonwebtoken
+      const secret = new TextEncoder().encode(process.env.ACCESS_TOKEN_SECRET);
+
+      const { payload } = await jwtVerify(token, secret, {
+        algorithms: ["HS256"],
       });
       // ตรวจ role
       if ((payload as any).role !== "admin") {

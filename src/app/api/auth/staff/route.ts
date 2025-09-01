@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     }
 
     // สร้าง tokens
-    const accessToken = generateAccessToken(staff.staffID); // <-- ใช้ staffID
+    const accessToken = generateAccessToken(staff.staffID,staff.role); // <-- ใช้ staffID
     const refreshToken = generateRefreshToken(staff.staffID);
 
     // ตอบกลับ Access Token + เก็บ Refresh Token ใน Cookie
