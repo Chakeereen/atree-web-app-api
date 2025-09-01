@@ -1,5 +1,7 @@
 'use server'
 
+const baseUrl = process.env.API_URL as string;
+
 // ✅ Create Table
 export const createTableNoAction = async (prevState: any, formData: FormData) => {
   try {
@@ -9,7 +11,7 @@ export const createTableNoAction = async (prevState: any, formData: FormData) =>
       return { message: "locationDetail is required", success: false };
     }
 
-    const response = await fetch("http://localhost:3000/api/admin/table", {
+    const response = await fetch(`${baseUrl}/api/admin/table`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ locationDetail }),
@@ -38,7 +40,7 @@ export const editTableNoAction = async (prevState: any, formData: FormData) => {
       return { message: "tableNo and locationDetail are required", success: false };
     }
 
-    const response = await fetch(`http://localhost:3000/api/admin/table/${tableNo}`, {
+    const response = await fetch(`${baseUrl}/api/admin/table/${tableNo}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ locationDetail }),
@@ -64,7 +66,7 @@ export const deleteTableNoAction = async (tableNo: number) => {
       return { message: "tableNo is required", success: false };
     }
 
-    const response = await fetch(`http://localhost:3000/api/admin/table/${tableNo}`, {
+    const response = await fetch(`${baseUrl}/api/admin/table/${tableNo}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
     });
@@ -84,7 +86,7 @@ export const deleteTableNoAction = async (tableNo: number) => {
 // ✅ Get all Tables
 export const getTableNoAll = async () => {
   try {
-    const response = await fetch("http://localhost:3000/api/admin/table", {
+    const response = await fetch(`${baseUrl}/api/admin/table`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });

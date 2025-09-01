@@ -5,16 +5,18 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Loader2 } from "lucide-react";
-import { Menu } from "../../../../../utils/type";
+import { MenuLists } from "@/utils/type";
+
+const baseUrl = process.env.API_URL as string;
 
 export default function MenuTable() {
-  const [menus, setMenus] = useState<Menu[]>([]);
+  const [menus, setMenus] = useState<MenuLists[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchMenus = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/admin/menu", { cache: "no-store" });
+        const res = await fetch(`${baseUrl}/api/admin/menu`, { cache: "no-store" });
         if (!res.ok) throw new Error("Failed to fetch menus");
         const data = await res.json();
         console.log(data)

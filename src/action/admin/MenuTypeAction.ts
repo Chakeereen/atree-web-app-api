@@ -1,5 +1,7 @@
 'use server'
 
+const baseUrl = process.env.API_URL as string;
+
 
 export const createMenuTypeAction = async (prevState: any, formData: FormData) => {
   try {
@@ -11,7 +13,7 @@ export const createMenuTypeAction = async (prevState: any, formData: FormData) =
     }
 
     // เรียก API POST /admin/menutype
-    const response = await fetch("http://localhost:3000/api/admin/menuType", {
+    const response = await fetch(`${baseUrl}/api/admin/menuType`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name }),
@@ -44,7 +46,7 @@ export const editMenuTypeAction = async (prevState: any, formData: FormData) => 
     }
 
     // เรียก API PATCH /admin/menutype
-    const response = await fetch(`http://localhost:3000/api/admin/menuType/${categoryId}`, {
+    const response = await fetch(`${baseUrl}/api/admin/menuType/${categoryId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({  name }),
@@ -70,7 +72,7 @@ export const deleteMenuTypeAction = async (categoryId: number) => {
       return { message: "Category ID is required", success: false };
     }
 
-    const response = await fetch(`http://localhost:3000/api/admin/menuType/${categoryId}`, {
+    const response = await fetch(`${baseUrl}/api/admin/menuType/${categoryId}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
     });
@@ -89,7 +91,7 @@ export const deleteMenuTypeAction = async (categoryId: number) => {
 
 export const getMenuTypeAll = async () => {
   try {
-    const response = await fetch("http://localhost:3000/api/admin/menuType", {
+    const response = await fetch(`${baseUrl}/api/admin/menuType`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });

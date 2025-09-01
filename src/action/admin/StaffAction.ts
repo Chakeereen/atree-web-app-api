@@ -1,6 +1,9 @@
 'use server'
 import bcrypt from "bcryptjs";
 
+const baseUrl = process.env.API_URL as string;
+
+
 export const createStaffAction = async (prevState: any, formData: FormData) => {
     try {
         const file = formData.get("image") as File | null;
@@ -25,7 +28,7 @@ export const createStaffAction = async (prevState: any, formData: FormData) => {
             const uploadForm = new FormData();
             uploadForm.append("file", file);
 
-            const uploadRes = await fetch("http://localhost:3000/api/admin/staff/image", {
+            const uploadRes = await fetch(`${baseUrl}/api/admin/staff/image`, {
                 method: "POST",
                 body: uploadForm,
             });
@@ -55,7 +58,7 @@ export const createStaffAction = async (prevState: any, formData: FormData) => {
             fileID: fileId,
         };
 
-        const response = await fetch("http://localhost:3000/api/admin/staff", {
+        const response = await fetch(`${baseUrl}/api/admin/staff`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(rawFormData),
@@ -88,7 +91,7 @@ export const editStaffAction = async (prevState: any, formData: FormData) => {
     if (file && file.size > 0) {
         // ลบไฟล์เก่า (ถ้ามี)
         if (oldFileId) {
-            await fetch("http://localhost:3000/api/admin/image", {
+            await fetch(`${baseUrl}/api/admin/image`, {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ fileId: oldFileId }),
@@ -124,7 +127,7 @@ export const editStaffAction = async (prevState: any, formData: FormData) => {
             rawFormData.password = hashedPassword;
         }
 
-        const response = await fetch(`http://localhost:3000/api/admin/staff/${staffID}`, {
+        const response = await fetch(`${baseUrl}/api/admin/staff/${staffID}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(rawFormData),
@@ -145,7 +148,7 @@ export const editStaffAction = async (prevState: any, formData: FormData) => {
 export const deleteStaffAction = async (staffID: string, fileId: string) => {
 
     if (fileId) {
-        const deleteImageRes = await fetch("http://localhost:3000/api/admin/staff/image", {
+        const deleteImageRes = await fetch(`${baseUrl}/api/admin/staff/image`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ fileId }),
@@ -157,7 +160,7 @@ export const deleteStaffAction = async (staffID: string, fileId: string) => {
         }
     }
     try {
-        const response = await fetch(`http://localhost:3000/api/admin/staff/${staffID}`, {
+        const response = await fetch(`${baseUrl}/api/admin/staff/${staffID}`, {
             method: "DELETE",
         });
 
@@ -175,7 +178,7 @@ export const deleteStaffAction = async (staffID: string, fileId: string) => {
 
 export const getStaffAll = async () => {
     try {
-        const res = await fetch("http://localhost:3000/api/admin/staff", {
+        const res = await fetch(`${baseUrl}/api/admin/staff`, {
             cache: "no-store",
         });
 

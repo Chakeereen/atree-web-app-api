@@ -1,7 +1,7 @@
 'use server';
 
-//import { URL } from "../../utils/url";
 
+const baseUrl = process.env.API_URL as string;
 
 
 export const createMenuAction = async (prevState: any, formData: FormData) => {
@@ -21,7 +21,7 @@ export const createMenuAction = async (prevState: any, formData: FormData) => {
       const uploadForm = new FormData();
       uploadForm.append("file", file);
 
-      const uploadRes = await fetch("http://localhost:3000/api/admin/menu/image", {
+      const uploadRes = await fetch(`${baseUrl}/api/admin/menu/image`, {
         method: "POST",
         body: uploadForm,
       });
@@ -43,7 +43,7 @@ export const createMenuAction = async (prevState: any, formData: FormData) => {
       typeID: Number(formData.get("menuType")),
     };
 
-    const response = await fetch("http://localhost:3000/api/admin/menu", {
+    const response = await fetch(`${baseUrl}/api/admin/menu`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(rawFormData),
@@ -79,7 +79,7 @@ export const editMenuAction = async (prevState: any, formData: FormData) => {
     if (file && file.size > 0) {
       // ลบไฟล์เก่า (ถ้ามี)
       if (oldFileId) {
-        await fetch("http://localhost:3000/api/admin/menu/image", {
+        await fetch(`${baseUrl}/api/admin/menu/image`, {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ fileId: oldFileId }),
@@ -90,7 +90,7 @@ export const editMenuAction = async (prevState: any, formData: FormData) => {
       const uploadForm = new FormData();
       uploadForm.append("file", file);
 
-      const uploadRes = await fetch("http://localhost:3000/api/admin/image", {
+      const uploadRes = await fetch(`${baseUrl}/api/admin/image`, {
         method: "POST",
         body: uploadForm,
       });
@@ -112,7 +112,7 @@ export const editMenuAction = async (prevState: any, formData: FormData) => {
       typeID: Number(formData.get("menuType")),
     };
 
-    const response = await fetch(`http://localhost:3000/api/admin/menu/${menuID}`, {
+    const response = await fetch(`${baseUrl}/api/admin/menu/${menuID}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(rawFormData),
@@ -135,7 +135,7 @@ export const deleteMenuAction = async (menuID: number, fileId?: string) => {
   try {
     // ลบรูปใน ImageKit ก่อน
     if (fileId) {
-      const deleteImageRes = await fetch("http://localhost:3000/api/admin/image", {
+      const deleteImageRes = await fetch(`${baseUrl}/api/admin/image`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ fileId }),
@@ -148,7 +148,7 @@ export const deleteMenuAction = async (menuID: number, fileId?: string) => {
     }
 
     // ลบข้อมูลเมนูใน DB
-    const response = await fetch(`http://localhost:3000/api/admin/menu/${menuID}`, {
+    const response = await fetch(`${baseUrl}/api/admin/menu/${menuID}`, {
       method: "DELETE",
     });
 
@@ -166,7 +166,7 @@ export const deleteMenuAction = async (menuID: number, fileId?: string) => {
 
 export const getMenuAll = async () => {
   try {
-    const res = await fetch("http://localhost:3000/api/admin/menu", {
+    const res = await fetch(`${baseUrl}/api/admin/menu`, {
       cache: "no-store",
     });
 
@@ -183,7 +183,7 @@ export const getMenuAll = async () => {
 
 export const updateMenuAvailability = async (menuID: number, isAvailable: boolean) => {
   try {
-    const response = await fetch(`http://localhost:3000/api/admin/menu/${menuID}`, {
+    const response = await fetch(`${baseUrl}/api/admin/menu/${menuID}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ isAvailable }),

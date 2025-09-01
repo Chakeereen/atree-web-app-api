@@ -3,7 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 
-
+const baseUrl = process.env.API_URL as string;
 
 
 export const createAdminAction = async (prevState: any, formData: FormData) => {
@@ -33,7 +33,7 @@ export const createAdminAction = async (prevState: any, formData: FormData) => {
       const uploadForm = new FormData();
       uploadForm.append("file", file);
 
-      const uploadRes = await fetch("http://localhost:3000/api/admin/staff/image", {
+      const uploadRes = await fetch(`${baseUrl}/api/admin/staff/image`, {
         method: "POST",
         body: uploadForm,
       });
